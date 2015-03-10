@@ -1,7 +1,7 @@
 function TreeManipulator(options) {
 	options = options || {};
-	this.identifierAttribute = options.identifierAttribute || 'id';
-	this.nestedNodesAttribute = options.nestedNodesAttribute || 'children';
+	this.identifierProperty = options.identifierProperty || 'id';
+	this.nestedNodesProperty = options.nestedNodesProperty || 'children';
 	this.idGenerator = options.idGenerator || this._idGenerator;
 	this.valueGetter = options.valueGetter || this._valueGetter;
 	this.valueSetter = options.valueSetter || this._valueSetter;
@@ -20,16 +20,16 @@ TreeManipulator.prototype.findNode = function(identifierValue, tree) {
 
 TreeManipulator.prototype._recursiveGetNode = function(identifierValue, path, node) {
 	var found = [];
-	if (this.valueGetter(node, this.identifierAttribute) === identifierValue) {
+	if (this.valueGetter(node, this.identifierProperty) === identifierValue) {
 		path = path.slice(0);
-		path.push(node[this.identifierAttribute]);
+		path.push(node[this.identifierProperty]);
 		found.push({
 			node: node,
 			path: path
 		});
-	} else if (this.valueGetter(node, this.nestedNodesAttribute) && this.valueGetter(node, this.nestedNodesAttribute).length > 0) {
-		path.push(this.valueGetter(node, this.identifierAttribute));
-		found = this.valueGetter(node, this.nestedNodesAttribute).map(this._recursiveGetNode.bind(this, identifierValue, path)).filter(function(mapped) {
+	} else if (this.valueGetter(node, this.nestedNodesProperty) && this.valueGetter(node, this.nestedNodesProperty).length > 0) {
+		path.push(this.valueGetter(node, this.identifierProperty));
+		found = this.valueGetter(node, this.nestedNodesProperty).map(this._recursiveGetNode.bind(this, identifierValue, path)).filter(function(mapped) {
 			return !!mapped;
 		});
 	}
@@ -46,7 +46,7 @@ TreeManipulator.prototype.deleteNode = function(identifierValue, tree) {
 		if (path[1]) {
 			parent = this.findNode(path[1], tree);
 			if (parent) {
-				deleted = this.removeItemFromArray(found.node, this.valueGetter(parent.node, this.nestedNodesAttribute));
+				deleted = this.removeItemFromArray(found.node, this.valueGetter(parent.node, this.nestedNodesProperty));
 			}
 		}
 	}
@@ -65,22 +65,22 @@ TreeManipulator.prototype.createNode = function(identifierValue, options, tree) 
 		parent = parent ? parent.node : undefined;
 	}
 	if (parent) {
-		this.valueSetter(parent, this.nestedNodesAttribute, this.valueGetter(parent, this.nestedNodesAttribute) || []);
+		this.valueSetter(parent, this.nestedNodesProperty, this.valueGetter(parent, this.nestedNodesProperty) || []);
 		if (options.before) {
 			before = this.findNode(options.before, parent);
 			before = before ? before.node : undefined;
-			index = this.valueGetter(parent, this.nestedNodesAttribute).indexOf(before);
+			index = this.valueGetter(parent, this.nestedNodesProperty).indexOf(before);
 		} else if (options.after) {
 			after = this.findNode(options.after, parent);
 			after = after ? after.node : undefined;
-			index = this.valueGetter(parent, this.nestedNodesAttribute).indexOf(after);
+			index = this.valueGetter(parent, this.nestedNodesProperty).indexOf(after);
 		} else {
-			index = this.valueGetter(parent, this.nestedNodesAttribute).length;
+			index = this.valueGetter(parent, this.nestedNodesProperty).length;
 		}
 		if (typeof index === 'number') {
 			created = this.nodeCreator();
-			this.valueSetter(created, this.identifierAttribute, identifierValue || this.idGenerator());
-			this.addItemToArray(created, index, this.valueGetter(parent, this.nestedNodesAttribute));
+			this.valueSetter(created, this.identifierProperty, identifierValue || this.idGenerator());
+			this.addItemToArray(created, index, this.valueGetter(parent, this.nestedNodesProperty));
 		}
 	}
 	return created;
@@ -100,12 +100,12 @@ TreeManipulator.prototype._nodeCreator = function() {
 	return {};
 };
 
-TreeManipulator.prototype._valueGetter = function(obj, attr) {
-	return obj[attr];
+TreeManipulator.prototype._valueGetter = function(obj, property) {
+	return obj[property];
 };
 
-TreeManipulator.prototype._valueSetter = function(obj, attr, value) {
-	obj[attr] = value;
+TreeManipulator.prototype._valueSetter = function(obj, property, value) {
+	obj[property] = value;
 };
 
 TreeManipulator.prototype._idGenerator = function() {
