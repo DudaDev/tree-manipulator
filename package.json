@@ -1,0 +1,19 @@
+{
+  "name": "tree-manipulator",
+  "version": "0.0.1",
+  "description": "Tree object manipulator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DudaDev/tree-manipulator.git"
+  },
+  "author": "Ramy Ben Aroya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DudaDev/tree-manipulator/issues"
+  },
+  "homepage": "https://github.com/DudaDev/tree-manipulator"
+}
