@@ -48,7 +48,7 @@ ta.createNode('8', {parent: '2'}, tree);
 ## Installation
 
 ```
-npm install crosser --save
+npm install tree-manipulator --save
 ```
 
 
@@ -60,7 +60,7 @@ npm install crosser --save
 		- identifierProperty [`String`]  
 			identifier property of a node  
 			default: `'id'`    
-		- nestedNodesAttribute [`String`]  
+		- nestedNodesProperty [`String`]  
 			property name for nested nodes array  
 			default: `'children'`  
 		- idGenerator [`Function`]   
