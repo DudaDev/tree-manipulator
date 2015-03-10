@@ -2,6 +2,12 @@
 
 A service manipulating tree object.  
 
+## Installation
+
+```
+npm install tree-manipulator --save
+```
+
 ## Code Example
 
 ```javascript
@@ -27,35 +33,70 @@ var tree = {
 	}]
 };
 
-var ta = TreeManipulator();
+var tm = TreeManipulator();
 
-ta.findNode('2', tree);
-// returns the entire node with identifier '2'
+tm.findNode('2', tree);
+// 
+/*
+Returns the entire node with identifier '2' and its path
+{
+	node: {id:'2' ... },
+	path: ['1', '2']	
+}
+*/
 
-ta.deleteNode('2', tree);
-// returns the entire node with identifier '2' and deletes it from the tree
+tm.deleteNode('2', tree);
+/*
+ Deletes node from the tree. Returns the entire node with identifier '2' and its path.
+returns {
+	node: {id:'2' ... },
+	path: ['1', '2']	
+}
+*/
 
-ta.createNode('8', {parent: '2', before: '4'}, tree);
-// returns a new node with identifier '8' and inserts it after the node '4'
+tm.createNode('8', {parent: '2', before: '4'}, tree);
+/*
+Inserts a new node after the node '4'. Returns a new node with identifier '8' and its path.
+returns {
+	node: {id:'8' ... },
+	path: ['1', '2', '8']	
+}
+*/
 
-ta.createNode('8', {parent: '2', after: '3'}, tree);
-// returns a new node with identifier '8' and inserts it before the node '3'
+tm.createNode('8', {parent: '2', after: '3'}, tree);
+/*
+Inserts a new node before the node '3'. Returns a new node with identifier '8'.
+returns {
+	node: {id:'8' ... },
+	path: ['1', '2', '8']	
+}
+*/
 
-ta.createNode('8', {parent: '2'}, tree);
-// returns a new node with identifier '8' and appends it as a last child of the node '2'
+tm.createNode('8', {parent: '2'}, tree);
+/*
+Appends a new node as a last child of the node '2'. Returns a new node with identifier '8'.
+returns {
+	node: {id:'8' ... },
+	path: ['1', '2', '8']	
+}
+*/
+
+tm.print(tree);
+/** 
+output:
+		1
+		\___5
+			\___6
+			\___7
+
+**/
+
 ```
-
-## Installation
-
-```
-npm install tree-manipulator --save
-```
-
 
 ## API Reference
 
-####`constructor (options)`  
-- arguments:    
+#####`constructor (options)`  
+- Arguments:    
 	- options [`Object`]    
 		- identifierProperty [`String`]  
 			identifier property of a node  
@@ -113,15 +154,18 @@ npm install tree-manipulator --save
 			}
 			```  
 
-####`findNode (identifierValue, tree)`  
-- arguments:  
+#####`findNode (identifierValue, tree)`  
+- Arguments:  
 	- identifierValue [`String`]  
 	- tree [`Object`]  
 - Returns  
-	node [`Object`]
+	- found [`Object`]
+		- node [`Object`]
+		- path [`Array`]
 
-####`createNode (identifierValue, options, tree)`
-- arguments:  
+
+#####`createNode (identifierValue, options, tree)`
+- Arguments:  
 	- identifierValue [`String`]  
 	- options [`Object`]  
 		- parent [`String`] - parent identifier  
@@ -129,14 +173,22 @@ npm install tree-manipulator --save
 		- after [`String`] - after identifier  
 	- tree [`Object`]  
 - Returns      
-	node [`Object`]   
+	- found [`Object`]
+		- node [`Object`]
+		- path [`Array`]
 
-####`deleteNode (identifierValue, tree)`   
-- arguments:  
+#####`deleteNode (identifierValue, tree)`   
+- Arguments:  
 	- identifierValue [`String`]  
 	- tree [`Object`]  
 - Returns    
-	node [`Object`]  
+	- found [`Object`]
+		- node [`Object`]
+		- path [`Array`]
+
+#####`print (tree)`   
+- Arguments:  
+	- tree [`Object`]  
 
 ## License
 
