@@ -1,3 +1,7 @@
+var repeatString = function(string, num) {
+	return new Array(num + 1).join(string);
+};
+
 function TreeManipulator(options) {
 	options = options || {};
 	this.identifierProperty = options.identifierProperty || 'id';
@@ -20,8 +24,8 @@ TreeManipulator.prototype.findNode = function(identifierValue, tree) {
 
 TreeManipulator.prototype._recursiveGetNode = function(identifierValue, path, node) {
 	var found = [];
+	path = path.slice(0);
 	if (this.valueGetter(node, this.identifierProperty) === identifierValue) {
-		path = path.slice(0);
 		path.push(node[this.identifierProperty]);
 		found.push({
 			node: node,
@@ -39,7 +43,7 @@ TreeManipulator.prototype._recursiveGetNode = function(identifierValue, path, no
 TreeManipulator.prototype.deleteNode = function(identifierValue, tree) {
 	var found = this.findNode(identifierValue, tree),
 		parent,
-		path,
+		path = [],
 		deleted;
 	if (found) {
 		path = found.path.reverse();
@@ -49,8 +53,12 @@ TreeManipulator.prototype.deleteNode = function(identifierValue, tree) {
 				deleted = this.removeItemFromArray(found.node, this.valueGetter(parent.node, this.nestedNodesProperty));
 			}
 		}
+		path.reverse();
 	}
-	return deleted;
+	return {
+		node: deleted,
+		path: path
+	};
 };
 
 TreeManipulator.prototype.createNode = function(identifierValue, options, tree) {
@@ -59,33 +67,59 @@ TreeManipulator.prototype.createNode = function(identifierValue, options, tree) 
 		before,
 		after,
 		created,
-		index;
+		path = [],
+		index,
+		newId;
 	if (options.parent) {
 		parent = this.findNode(options.parent, tree);
-		parent = parent ? parent.node : undefined;
 	}
-	if (parent) {
-		this.valueSetter(parent, this.nestedNodesProperty, this.valueGetter(parent, this.nestedNodesProperty) || []);
+	if (parent && parent.node) {
+		this.valueSetter(parent.node, this.nestedNodesProperty, this.valueGetter(parent, this.nestedNodesProperty) || []);
 		if (options.before) {
-			before = this.findNode(options.before, parent);
+			before = this.findNode(options.before, parent.node);
 			before = before ? before.node : undefined;
-			index = this.valueGetter(parent, this.nestedNodesProperty).indexOf(before);
+			index = this.valueGetter(parent.node, this.nestedNodesProperty).indexOf(before);
 		} else if (options.after) {
-			after = this.findNode(options.after, parent);
+			after = this.findNode(options.after, parent.node);
 			after = after ? after.node : undefined;
-			index = this.valueGetter(parent, this.nestedNodesProperty).indexOf(after);
+			index = this.valueGetter(parent.node, this.nestedNodesProperty).indexOf(after);
 		} else {
-			index = this.valueGetter(parent, this.nestedNodesProperty).length;
+			index = this.valueGetter(parent.node, this.nestedNodesProperty).length;
 		}
 		if (typeof index === 'number') {
+			newId = identifierValue || this.idGenerator();
 			created = this.nodeCreator();
-			this.valueSetter(created, this.identifierProperty, identifierValue || this.idGenerator());
-			this.addItemToArray(created, index, this.valueGetter(parent, this.nestedNodesProperty));
+			this.valueSetter(created, this.identifierProperty, newId);
+			this.addItemToArray(created, index, this.valueGetter(parent.node, this.nestedNodesProperty));
+			path = path.concat(parent.path);
+			path.push(newId);
 		}
 	}
-	return created;
-
+	return {
+		node: created,
+		path: path
+	};
 };
+
+TreeManipulator.prototype.print = function(tree) {
+	this._recursivePrint(0, tree);
+};
+
+TreeManipulator.prototype._recursivePrint = function(depth, node) {
+	var prefix = '',
+		branchStr =  ' \\___';
+	if (depth === 1){
+		prefix = branchStr;
+	} else if (depth > 1){
+		prefix = repeatString('     ', depth -1) + branchStr;
+	}
+	
+	if (node){
+		console.log(prefix + this.valueGetter(node, this.identifierProperty) + '\n');
+	}
+	(this.valueGetter(node, this.nestedNodesProperty) || []).forEach(this._recursivePrint.bind(this, depth + 1));
+};
+
 
 TreeManipulator.prototype._addItemToArray = function(item, index, array) {
 	array.splice(index, 0, item);
