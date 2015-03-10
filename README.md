@@ -1,4 +1,4 @@
-# Tree Manipulator
+# Tree Manipulator [![npm version](https://badge.fury.io/js/tree-manipulator.svg)](http://badge.fury.io/js/tree-manipulator)
 
 A service manipulating tree object.  
 
