@@ -56,7 +56,7 @@ returns {
 
 tm.createNode('8', {parent: '2', before: '4'}, tree);
 /*
-Inserts a new node after the node '4'. Returns a new node with identifier '8' and its path.
+Inserts a new node before the node '4'. Returns a new node with identifier '8' and its path.
 returns {
 	node: {id:'8' ... },
 	path: ['1', '2', '8']	
@@ -65,7 +65,7 @@ returns {
 
 tm.createNode('8', {parent: '2', after: '3'}, tree);
 /*
-Inserts a new node before the node '3'. Returns a new node with identifier '8'.
+Inserts a new node after the node '3'. Returns a new node with identifier '8' and its path.
 returns {
 	node: {id:'8' ... },
 	path: ['1', '2', '8']	
@@ -74,7 +74,7 @@ returns {
 
 tm.createNode('8', {parent: '2'}, tree);
 /*
-Appends a new node as a last child of the node '2'. Returns a new node with identifier '8'.
+Appends a new node as a last child of the node '2'. Returns a new node with identifier '8' and its path.
 returns {
 	node: {id:'8' ... },
 	path: ['1', '2', '8']	
