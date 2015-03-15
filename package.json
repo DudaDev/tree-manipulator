@@ -1,6 +1,6 @@
 {
   "name": "tree-manipulator",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Tree object manipulator",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/DudaDev/tree-manipulator/issues"
   },
-  "homepage": "https://github.com/DudaDev/tree-manipulator"
+  "homepage": "https://github.com/DudaDev/tree-manipulator",
+  "devDependencies": {
+    "chai": "^2.1.1",
+    "mocha": "^2.2.1"
+  }
 }

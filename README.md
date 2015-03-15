@@ -33,7 +33,7 @@ var tree = {
 	}]
 };
 
-var tm = TreeManipulator();
+var tm = new TreeManipulator();
 
 tm.findNode('2', tree);
 // 
