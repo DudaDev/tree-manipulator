@@ -74,7 +74,7 @@ TreeManipulator.prototype.createNode = function(identifierValue, options, tree) 
 		parent = this.findNode(options.parent, tree);
 	}
 	if (parent && parent.node) {
-		this.valueSetter(parent.node, this.nestedNodesProperty, this.valueGetter(parent, this.nestedNodesProperty) || []);
+		this.valueSetter(parent.node, this.nestedNodesProperty, this.valueGetter(parent.node, this.nestedNodesProperty) || []);
 		if (options.before) {
 			before = this.findNode(options.before, parent.node);
 			before = before ? before.node : undefined;
