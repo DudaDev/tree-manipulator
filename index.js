@@ -82,7 +82,7 @@ TreeManipulator.prototype.createNode = function(identifierValue, options, tree) 
 		} else if (options.after) {
 			after = this.findNode(options.after, parent.node);
 			after = after ? after.node : undefined;
-			index = this.valueGetter(parent.node, this.nestedNodesProperty).indexOf(after);
+			index = this.valueGetter(parent.node, this.nestedNodesProperty).indexOf(after) + 1;
 		} else {
 			index = this.valueGetter(parent.node, this.nestedNodesProperty).length;
 		}
