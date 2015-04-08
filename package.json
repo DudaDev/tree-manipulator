@@ -1,6 +1,6 @@
 {
   "name": "tree-manipulator",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Tree object manipulator",
   "main": "index.js",
   "scripts": {
