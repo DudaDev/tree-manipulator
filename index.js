@@ -145,10 +145,16 @@ TreeManipulator.prototype._valueSetter = function(obj, property, value) {
 };
 
 TreeManipulator.prototype._idGenerator = function() {
-	return this._rusha.digestFromString(new Date().getTime().toString() + (++this._counter));
+	return this._rusha.digestFromString(new Date().getTime().toString() + this._getCounter());
 };
 
-TreeManipulator.prototype._counter = 0;
+TreeManipulator.prototype._getCounter = (function(){
+	var counter = 0;
+	return function(){
+		return (++counter);	
+	}
+})();
+
 TreeManipulator.prototype._rusha = new Rusha();
 
 module.exports = TreeManipulator;
