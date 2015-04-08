@@ -109,7 +109,7 @@ output:
 			default:   
 			```
 			function(){  
-				return new Date().getTime().toString();  
+				//returns a unique sha derived from timestamp and an internal counter
 			}
 			```    
 		- valueGetter [`Function`]  

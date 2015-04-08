@@ -2,6 +2,8 @@ var repeatString = function(string, num) {
 	return new Array(num + 1).join(string);
 };
 
+var Rusha = require('rusha');
+
 function TreeManipulator(options) {
 	options = options || {};
 	this.identifierProperty = options.identifierProperty || 'id';
@@ -143,7 +145,10 @@ TreeManipulator.prototype._valueSetter = function(obj, property, value) {
 };
 
 TreeManipulator.prototype._idGenerator = function() {
-	return new Date().getTime().toString();
+	return this._rusha.digestFromString(new Date().getTime().toString() + (++this._counter));
 };
+
+TreeManipulator.prototype._counter = 0;
+TreeManipulator.prototype._rusha = new Rusha();
 
 module.exports = TreeManipulator;
